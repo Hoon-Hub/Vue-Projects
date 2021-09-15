@@ -9,43 +9,60 @@
 </head>
 <body>
     <div id="root">
-        <div>
-            <div>{{ word }}</div>
-            <form @submit="onSubmitForm">
-                <input type="text" ref="answer" v-model="value" />
-                <button type="submit">submit</button>
-            </form>
-            <div>{{ result }}</div>
-        </div>
-
+        <wordRelay start-word="hello"></wordRelay>
+        <wordRelay></wordRelay>
+        <wordRelay></wordRelay>
 
     </div>
-
-    <script>
-        const app = new Vue({
-            el: '#root',
-            data: {
-                word: '가능성',
+<script>
+    // 비슷한 패턴을 만들어야할 때 구분 짓기 위해 
+    // 컴포넌트를 사용한다.
+    // 컴포넌트는 독립적이다.
+    Vue.component('word-relay', {
+        template: `
+            <div>
+                <div>{{ word }}</div>
+                    <form @submit="onSubmitForm">
+                        <input type="text" ref="answer" v-model="value" />
+                        <button type="submit">submit</button>
+                    </form>
+                <div>{{ result }}</div>
+            </div>
+        `,
+        props: ['startWord'],
+        // 특이점 : data : component할때는 data가 달라진다.
+        data() {
+            return {
+                word: 'this.startWord',
                 result: '',
                 value: '',
-            },
-            methods: {
-                onSubmitForm(e) {
-                    e.preventDefault();
-                    if(this.word[this.word.length -1] === this.value[0]){
-                        this.result = '딩동댕'
-                        this.word = this.value
-                        this.value = ''
-                        this.$refs.answer.focus()
-                    }else{
-                        this.result = '땡'
-                        this.value = ''
-                        this.$refs.answer.focus()
+            }
+        },
+        methods: {
+            onSubmitForm(e) {
+                e.preventDefault();
+                if(this.word[this.word.length -1] === this.value[0]){
+                    this.result = '딩동댕'
+                    this.word = this.value
+                    this.value = ''
+                    this.$refs.answer.focus()
+                }else{
+                    this.result = '땡'
+                    this.value = ''
+                    this.$refs.answer.focus()
 
-                    }
-                },
+                }
             },
-        })
-    </script>
+        }
+    })
+
+</script>
+<script>
+    
+
+    const app = new Vue({
+        el: '#root',
+    })
+</script>
 </body>
 </html>
