@@ -18,7 +18,7 @@
     // 비슷한 패턴을 만들어야할 때 구분 짓기 위해 
     // 컴포넌트를 사용한다.
     // 컴포넌트는 독립적이다.
-    Vue.component('word-relay', {
+    Vue.component('wordRelay', {
         template: `
             <div>
                 <div>{{ word }}</div>
@@ -30,9 +30,11 @@
             </div>
         `,
         props: ['startWord'],
+
         // 특이점 : data : component할때는 data가 달라진다.
         data() {
             return {
+                
                 word: 'this.startWord',
                 result: '',
                 value: '',
@@ -58,8 +60,6 @@
 
 </script>
 <script>
-    
-
     const app = new Vue({
         el: '#root',
     })

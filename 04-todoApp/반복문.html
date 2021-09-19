@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <ul style="list-style: none;">
+            <template v-for="item in items">
+                <li >
+                    <img :src="item.image" alt="image number {{id}}" width="100" height="50"><br>
+                    {{item.title}}
+                </li>
+            </template>
+        </ul>
+    </div>
+
+    <script>
+        let app = new Vue ({
+            el: '#app',
+            data () {
+                return {
+                    items: [
+                        {
+                            id: 1,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '컴퓨터'
+                        },
+                        {
+                            id: 2,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '해변'
+                        },
+                        {
+                            id: 3,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '날씨'
+                        },
+                        {
+                            id: 4,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '과자'
+                        },
+                        {
+                            id: 5,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '사탕'
+                        },
+                        {
+                            id: 6,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '딸기'
+                        },
+                        {
+                            id: 7,
+                            image: 'https://source.unsplash.com/random/1920x1080',
+                            title: '연두색'
+                        },
+
+                        
+                    ]
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
