@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
+use App\Htpp\Requests\UpdateFormRequest;
 
 class BookController extends Controller
 {
     public function index () {
-        $books = Book::get();
+        $books = Book::paginate(5);
         return view('book.index', compact('books'));
     }
 
@@ -18,14 +19,59 @@ class BookController extends Controller
     }
 
     public function store (BookStoreRequest $request) {
-        
+
+        $image = $request->file('image')->store('public/product');
 
         Book::create([
             'name' => $request->name,
             'description' => $request->description,
             'category' => $request->category,
+            'image' => $image,
         ]);
-        return back()->with('message', 'New book added!');
+        return redirect()->route('book.index')->with('message', 'New book added!');
         
+    }
+
+    public function edit ($id) {
+        $book = Book::find($id);
+
+        return view('book.edit', compact('book'));
+    }
+
+    public function update ( Request $request, $id ) {
+
+        $book = Book::find($id);
+        if($request->hasFile('image')){
+
+            $image = $book->image;
+
+            $image = $request->file('image')->store('public/product');
+            $book->name = $request->name;
+            $book->description = $request->description;
+            $book->category = $request->category;
+            $book->image = $image;
+            $book->save();
+
+        }else{
+
+            $image = $request->file('image')->store('public/product');
+            $book->name = $request->name;
+            $book->description = $request->description;
+            $book->category = $request->category;
+            $book->save();
+            
+        }
+
+        
+
+        return redirect()->route('book.index')->with('message','book updated') ;
+    }
+
+    public function destroy ($id) {
+        $book = Book::find($id);
+        $book->delete();
+
+        return redirect()->route('book.index')->with('message','book deleted') ;
+
     }
 }

@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="container">
-    <div class="row justify-content-center">    
+    <div class="row justify-content-center">
         <div class="col-md-8">
             @if (Session::has('message'))
                 <div class="alert alert-success">
@@ -10,32 +9,30 @@
                 </div>
             @endif
             <div class="card  mt-5">
-                <div class="card-header fw-bold">Create a New Book!</div>
+                <div class="card-header fw-bold">Update a Book!</div>
                 <div class="card-body">
-                    <form action="{{ route('book.store') }}" method="post" enctype="multipart/form-data">@csrf
-
+                    <form action="{{ route('book.update', $book->id) }}" method="post" enctype="multipart/form-data">@csrf
                         <label for="">Name of Book</label>
-                        <input type="text" name="name" class="form-control" placeholder="name of book"><br>
+                        <input type="text" name="name" class="form-control" value="{{ $book->name }}"><br>
                         @if($errors->has('name'))
                             <span class="text-danger">{{ $errors->first('name') }}</span><br>
                         @endif
                         <label for="">Description of Book</label>
-                        <textarea name="description" class="form-control" cols="30" rows="10"></textarea><br>
+                        <textarea name="description" class="form-control" cols="30" rows="10">{{ $book->description }}</textarea><br>
                         @if($errors->has('description'))
                             <span class="text-danger">{{ $errors->first('description') }}</span><br>
                         @endif
                         <label for="">Category</label>
                         <select name="category" id="" class="form-control">
                             <option value="">select</option>
-                            <option value="frictional">Frictional Book</option>
-                            <option value="biography">Biography Book</option>
-                            <option value="comedy">Comedy Book</option>
-                            <option value="education">Education</option>
+                            <option value="frictional"@if($book->category=='frictional') selected @endif> Frictional Book </option>
+                            <option value="biography" @if($book->category=='biography') selected @endif>Biography Book</option>
+                            <option value="comedy" @if($book->category=='comedy') selected @endif>Comedy Book</option>
+                            <option value="education" @if($book->category=='education') selected @endif>Education</option>
                         </select>
                         @if($errors->has('category'))
                             <span class="text-danger">{{ $errors->first('category') }}</span><br>
                         @endif
-                        <br>
                         <label for="">Image of Book</label>
                         <input type="file" name="image" class="form-control">
                         @if($errors->has('image'))
@@ -49,5 +46,4 @@
         </div>
     </div>
 </div>
-
 @endsection

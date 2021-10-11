@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
-
-</head>
-<body>
+@extends('layouts.app')
+@section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                @if (Session::has('message'))
+                    <div class="alert alert-success">
+                        {{ Session::get('message') }}
+                    </div>
+                @endif  
                 <div class="card  mt-5">
                     <div class="card-header fw-bold">List of all Books!</div>
                     <div class="card-body">
@@ -22,26 +17,45 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">category</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach ($books as $book)
                                 <tr>
+                                    <td>
+                                        @if($book->image)
+                                        <img src="{{ Storage::url($book->image) }}" alt="Image of Book" width="80">
+                                        @else
+                                        <img src="/img/test.png" width="80" alt="no images">
+                                        @endif
+                                    </td>
                                     <td>{{ $book->name }}</td>
                                     <td>{{ $book->description }}</td>
                                     <td>{{ $book->category }}</td>
+                                    <td>
+                                        <a href="{{ route('book.edit', [$book->id]) }}">
+                                            <button class="btn btn-info"><i class="fas fa-edit"></i></button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('book.destroy', $book->id) }}" method="post">@csrf
+                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
-                                @empty
-                                <td>No any books</td>
-                                @endempty
+                                    
                                 @endforeach
                                
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-footer">
+                        {{ $books->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection
